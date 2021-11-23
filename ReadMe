@@ -1,0 +1,14 @@
+"Grading in Secondary Schools in Germany – The Impact of Social Origin and Gender“
+
+This repository contains the data files for data preparation, data description, and analysis for the above-mentioned study investigating the explainability of the process of obtaining (mid-year) grades in German among 9th graders in Germany in spring 2015. The study was published under DOI:TOBEADDED in *International Journal of Educational Research Open*.
+The study uses data from the IQB Education Trends 2015 (see https://www.iqb.hu-berlin.de/bt/BT2015) and was prepared by Michael Bayer (LIfBi Bamberg), Sabine Zinn (DIW / SOEP & Humboldt University Berlin) and Christin Rüdiger (IQB, Berlin). 
+
+The related citation is: 
+Bayer, M., Zinn, S., & C. Rüdiger (2021): Grading in Secondary Schools in Germany – The Impact of Social Origin and Gender, International Journal of Educational Research Open.
+
+The data files are to be used in the following order: 
+(1)	prepareData.R (in R)
+(2)	descr.R (in R) 
+(3)	allImpModel.do (in Stata)
+(4)	evallMP.R (in R)
+
