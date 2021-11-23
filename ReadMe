@@ -7,8 +7,8 @@ The related citation is:
 Bayer, M., Zinn, S., & C. Rüdiger (2021): Grading in Secondary Schools in Germany – The Impact of Social Origin and Gender, International Journal of Educational Research Open.
 
 The data files are to be used in the following order: 
-(1)	prepareData.R (in R)
-(2)	descr.R (in R) 
-(3)	allImpModel.do (in Stata)
-(4)	evallMP.R (in R)
+(1)	prepareData.R (in R) FOR data preparation, recoding, imputation, weighting
+(2)	descr.R (in R) FOR descriptive statistics
+(3)	allImpModel.do (in Stata) FOR weighted regression modelling (using all m=20 imputed data sets)
+(4)	evallMP.R (in R) FOR for pooling the regression results 
 
