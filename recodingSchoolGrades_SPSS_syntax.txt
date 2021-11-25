@@ -1,0 +1,381 @@
+*********************************************************************************************
+*Noten rekodieren (Syntax zur Rekodierung der Schulnoten auf 1-6)
+*ENG: SPSS syntax for recoding school grades to 1-6
+*********************************************************************************************
+* Vorbereitung ueber alle Bundeslaender hinweg
+*********************************************************************************************
+   
+value labels  trnotedeu.r trnoteeng.r trnotefra.r trnotemat.r 
+   1'sehr gut'
+   2'gut'
+   3'befriedigend'
+   4'ausreichend'
+   5'mangelhaft'
+   6'ungenuegend'
+   -96 'durch SK mit Kreuz/Strich markiert'
+   -97 'nicht administriert'
+   -98 'nicht valide'
+   -99 'keine Angabe'
+   -95 'keine Note erhalten/bekannt'
+   -94 'Fach nicht belegt'.
+execute.  
+   
+recode TR_NOTENSYSTEM (96=-96).  
+execute.
+  
+missing values trnotedeu.r trnoteeng.r trnotefra.r trnotemat.r  TR_NOTENSYSTEM (-99 THRU -94) .
+execute.
+
+*********************************************************************************************
+*Noten rekodieren: Deutsch, Mathe, Englisch, Franz?sisch
+*********************************************************************************************
+*Beschreibung des Vorgehens bei der Notenrekodierung .
+*Rekodierung der Noten auf das Notensystem 1 (sehr gut) bis 6 (ungeuegend) .
+
+*Allgemeine Regelung:
+*Tendenzen werden nicht beruecksichtigt (z.B. 2+ wird zu 2)
+*Mischnoten werden abgerundet (z.B. 2-3 wird zu 2)
+*zusaetzliche Kursdifferenzierung wird nicht beruecksichtigt (z.B. E1 wird zu 1) .
+
+*Im ersten Schritt werden fuer alle Bundeslaender und Faecher die "Plus- und Minusnoten" auf die ganzen Zahlen rekodiert (z.B. 2+ wird zu 2; 2- wird zu 2) .
+*Sodann erfolgt die Rekodierung aufgeteilt nach Bundeslaendern, die Rekodierungsvorschrift innerhalb eines Bundeslandes ist fuer alle Faecher identisch .
+*Fuer jedes Bundesland werden erst die Noten nach dem Notensystem 1 bis 6 rekodiert (tnotensys=1),
+*dann die Noten nach dem Notensystem 00  bis 15 Punkte (tnotensys=2),
+*danach die Noten nach einem anderen Notensystem (tnotensys=3) und die Noten ohne Angabe des dazugehoerigen Notensystems (tnotensys=9) .
+
+*Missings werden wie folgt rekodiert:
+ *  -96 'durch SK mit Kreuz/Strich markiert'
+ *  -97 'nicht administriert'
+ *  -98 'nicht valide'
+ *  -99 'keine Angabe'
+ *  -95 'keine Note erhalten/bekannt'
+ *  -94 'Fach nicht belegt'.
+   
+   *Allgemein gilt fuer Noten nach dem Notensystem 1 bis 6 folgende Rekodierungsvorschrift:
+   ( '1' = 1)
+   ( '2' = 2)
+   ( '3' = 3)
+   ( '4' = 4)
+   ( '5' = 5)
+   ( '6' = 6)
+   ( '00' = -98)
+   ( '01' = 1)
+   ( '02' = 2)
+   ( '03' = 3)
+   ( '04' = 4)
+   ( '05' = 5)
+   ( '06' = 6)
+   ( '07' = -98)
+   ( '08' = -98)
+   ( '09' = -98)
+   ( '10' = -98)
+   ( '11' = -98)
+   ( '12' = -98)
+   ( '13' = -98)
+   ( '14' = -98)
+   ( '15' = -98)
+   *Allgemein gilt fuer Noten nach dem Notensystem 00 bis 15 folgende Rekodierungsvorschrift:
+   ( '0' = 6)
+   ( '00' = 6)
+   ( '01' = 5)
+   ( '02' = 5)
+   ( '03' = 5)
+   ( '04' = 4)
+   ( '05' = 4)
+   ( '06' = 4)
+   ( '07' = 3)
+   ( '08' = 3)
+   ( '09' = 3)
+   ( '10' = 2)
+   ( '11' = 2)
+   ( '12' = 2)
+   ( '13' = 1)
+   ( '14' = 1)
+   ( '15' = 1)
+   ( '1' = 5)
+   ( '2' = 5)
+   ( '3' = 5)
+   ( '4' = 4)
+   ( '5' = 4)
+   ( '6' = 4)
+   ( '7' = 3)
+   ( '8' = 3)
+   ( '9' = 3)
+ 
+   *Ueber die allgemeine Rekodierungsvorschrift hinaus werden fuer jedes Bundesland Sonderwerte rekodiert
+
+*********************************************************************************************
+   *Fuer alle Bundeslaender und alle Schulformen nach Notensystemen 1-3.
+********************************************************************************************* .
+
+do if (tr_notensystem=1) .
+recode TR_NOTE_DEU TR_NOTE_ENG TR_NOTE_FRA TR_NOTE_MAT
+   ('1+' '1-' '1*' =1)  ('2+' '2-' '2*' =2) ('3+' '3-' '3*'=3) ('4+' '4-' '4*'=4) ('5+' '5-' '5*' =5) ( '6+' '6*' = 6)
+      ( '1' = 1)
+      ( '2' = 2)
+      ( '3' = 3)
+      ( '4' = 4)
+      ( '5' = 5)
+      ( '6' = 6)
+      ( '7' = -98)
+      ( '8' = -98)
+      ( '9' = -98)
+      ( '0' = -98)
+      ( '00' = -98)
+      ( '01' = 1)
+      ( '02' = 2)
+      ( '03' = 3)
+      ( '04' = 4)
+      ( '05' = 5)
+      ( '06' = 6)
+      ( '07' = -98)
+      ( '08' = -98)
+      ( '09' = -98)
+      ( '10' = -98)
+      ( '11' = -98)
+      ( '12' = -98)
+      ( '13' = -98)
+      ( '14' = -98)
+      ( '15' = -98)
+      ('1,0' = 1)
+('1-2'=1)
+('2-3'=2)
+('3-4'=3)
+('4-5'=4)
+('5-6'=5)
+('1,2' = 1)
+('1,25' = 1)
+('1,3' = 1)
+('1,5' = 1)
+('1,6' = 2)
+('1,7' = 2)
+('1,75' = 2)
+('1,8' = 2)
+('2,0' = 2)
+('2,1' = 2)
+('2,2' = 2)
+('2,25' = 2)
+('2,3' = 2)
+('2,4' = 2)
+('2,5' = 2)
+('2,6' = 3)
+('2,7' = 3)
+('2,75' = 3)
+('2,8' = 3)
+('2,9' = 3)
+('3,0' = 3)
+('3,1' = 3)
+('3,2' = 3)
+('3,25' = 3)
+('3,3' = 3)
+('3,4' = 3)
+('3,5' = 3)
+('3,6' = 4)
+('3,7' = 4)
+('3,75' = 4)
+('3,8' = 4)
+('3,9' = 4)
+('4,0' = 4)
+('4,1' = 4)
+('4,2' = 4)
+('4,25' = 4)
+('4,4' = 4)
+('4,5' = 4)
+('4,6' = 5)
+('4,7' = 5)
+('4,75' = 5)
+('4,8' = 5)
+('5,0' = 5)
+('5,2' = 5)
+('5,25' = 5)
+      (	'047'	 =	-98	)
+      (	'058'	 =	-98	)
+      (	'065'	 =	-98	)
+      (	'069'	 =	-98	)
+      (	'60'	 =	-98	)
+      (	'70'	 =	-98	)
+      (	'80'	 =	-98	)
+      (	'103'	 =	-98	)
+      (	'19'	 =	-98	)
+      (	'132'	 =	-98	)
+      (	'NF'	 =	-98	) 
+ ( '-94' =-94) ( '-95' =-95) ('-96' =-96) ('-97' =-97) ('-98' =-98) ('-99', ' '  =-99) (ELSE=-98)
+      INTO trnotedeu.r trnoteeng.r trnotefra.r trnotemat.r .
+
+else if (tr_notensystem=2) .
+   recode TR_NOTE_DEU TR_NOTE_ENG TR_NOTE_FRA TR_NOTE_MAT
+      ( '0' = 6)
+      ( '00' = 6)
+      ( '01' = 5)
+      ( '02' = 5)
+      ( '03' = 5)
+      ( '04' = 4)
+      ( '05' = 4)
+      ( '06' = 4)
+      ( '07' = 3)
+      ( '08' = 3)
+      ( '09' = 3)
+      ( '10' = 2)
+      ( '11' = 2)
+      ( '12' = 2)
+      ( '13' = 1)
+      ( '14' = 1)
+      ( '15' = 1)
+      ( '1' = 5)
+      ( '2' = 5)
+      ( '3' = 5)
+      ( '4' = 4)
+      ( '5' = 4)
+      ( '6' = 4)
+      ( '7' = 3)
+      ( '8' = 3)
+      ( '9' = 3)
+      (	'047'	 =	-98	)
+      (	'058'	 =	-98	)
+      (	'065'	 =	-98	)
+      (	'069'	 =	-98	)
+      (	'60'	 =	-98	)
+      (	'70'	 =	-98	)
+      (	'80'	 =	-98	)
+      (	'103'	 =	-98	)
+      (	'19'	 =	-98	)
+      (	'132'	 =	-98	)
+      (	'NF'	 =	-98	) 
+      ( 'A01' = 5 )
+      ( 'A02' = 5 )
+      ( 'A03' = 5 )
+      ( 'A04' = 4 )
+      ( 'A05' = 4 )
+      ( 'A06' = 4 )
+      ( 'A07' = 3 )
+      ( 'A08' = 3 )
+      ( 'A09' = 3 )
+      ( 'A10' = 2 )
+      ( 'A11' = 2 )
+      ( 'A12' = 2 )
+      ( 'A13' = 1 )
+      ( 'A14' = 1 )
+      ( 'A15' = 1 )
+      ( 'E01' = 5 )
+      ( 'E02' = 5 )
+      ( 'E03' = 5 )
+      ( 'E04' = 4 )
+      ( 'E05' = 4 )
+      ( 'E06' = 4 )
+      ( 'E07' = 3 )
+      ( 'E08' = 3 )
+      ( 'E09' = 3 )
+      ( 'E10' = 2 )
+      ( 'E11' = 2 )
+      ( 'E12' = 2 )
+      ( 'E13' = 1 )
+      ( 'E14' = 1 )
+      ( 'E15' = 1 )
+      ('G00' = 6)
+      ( 'G01' = 5 )
+      ( 'G02' = 5 )
+      ( 'G03' = 5 )
+      ( 'G04' = 4 )
+      ( 'G05' = 4 )
+      ( 'G06' = 4 )
+      ( 'G07' = 3 )
+      ( 'G08' = 3 )
+      ( 'G09' = 3 )
+      ( 'G10' = 2 )
+      ( 'G11' = 2 )
+      ( 'G12' = 2 )
+      ( 'G13' = 1 )
+      ( 'G14' = 1 )
+      ( 'G15' = 1 )
+('A2' = -98)
+('A3' = -98)
+('A4' = -98)
+('A5' = -98)
+('ANFÄNGE' = -98)
+('B2' = -98)
+('B3' = -98)
+('B4' = -98)
+('B5' = -98)
+('B6' = -98)
+('C2' = -98)
+('C3' = -98)
+('C4' = -98)
+('E1' = -98)
+('E1-' = -98)
+('E1+' = -98)
+('E2' = -98)
+('E2-' = -98)
+('E2+' = -98)
+('e3' = -98)
+('E3' = -98)
+('E3-' = -98)
+('E3+' = -98)
+('E4' = -98)
+('E4-' = -98)
+('E4-/G1-' = -98)
+('E4/G1' = -98)
+('E4+' = -98)
+('E4+/G1+' = -98)
+('E5' = -98)
+('F4-' = -98)
+('G1' = -98)
+('G2' = -98)
+('G2-' = -98)
+('G2+' = -98)
+('G3' = -98)
+('G3-' = -98)
+('G3+' = -98)
+('G4' = -98)
+('G4-' = -98)
+('G4+' = -98)
+('G5' = -98)
+('G5-' = -98)
+('G5+' = -98)
+('G6' = -98)
+('GESICHERTE KENNTNISSE' = -98)
+('GRUNDKENNTNISSE' = -98)
+('H1' = -98)
+('H2' = -98)
+('H3' = -98)
+('H4' = -98)
+('H5' = -98)
+('MEISTENS' = -98)
+('R2' = -98)
+('R3' = -98)
+('R4' = -98)
+('R5' = -98)
+('TEILWEISE' = -98)
+('Ü2' = -98)
+('Ü3' = -98)
+('Ü4' = -98)
+('Ü5' = -98)
+('Ü6' = -98)
+('Ü7' = -98)
+('VERTIEFTE KENNTNISSE' = -98)
+('WENIG' = -98)
+('R1' = -98)
+('Ü1' = -98)
+('VOLL' = -98)
+('C5' = -98)
+('e4' = -98)
+('G1-' = -98)
+('G1+' = -98)
+('GAR NICHT' = -98)
+      ( '-94' =-94) 
+	  ( '-95' =-95)
+	  ('-96' =-96) 
+	  ('-97' =-97) 
+	  ('-98' =-98)
+	  ('-99', ' '  =-99)
+	  INTO trnotedeu.r trnoteeng.r trnotefra.r trnotemat.r .
+
+else if (tr_notensystem=3) OR (tr_notensystem < -93) .
+      recode TR_NOTE_DEU TR_NOTE_ENG TR_NOTE_FRA TR_NOTE_MAT
+      ( '-94' =-94) ( '-95' =-95) ('-96' =-96) ('-97' =-97) ('-98' =-98) ('-99', ' '  =-99) (ELSE = -98)
+      INTO trnotedeu.r trnoteeng.r trnotefra.r trnotemat.r .
+
+
+
+END IF.
+
+ 
