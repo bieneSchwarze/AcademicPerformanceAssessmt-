@@ -12,3 +12,4 @@ The data files are to be used in the following order:
 (3)	allImpModel.do (in Stata) FOR weighted regression modelling (using all m=20 imputed data sets)
 (4)	evallMP.R (in R) FOR for pooling the regression results 
 
+Additonally this repository contains the source file "recodingSchoolGrades_SPSS_syntax.txt" (in SPSS, in German language) for coding grades from the self-filled questionnaires.
